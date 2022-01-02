@@ -1,0 +1,52 @@
+<!--
+  Copyright 2022, Bart Butenaers
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  http://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<script type="text/javascript">      
+    RED.nodes.registerType('v8-cpu-profiler',{
+        category: 'function',
+        color: '#a6bbcf',
+        defaults: {
+            timeout: {value:0},
+            name: {value:""}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "font-awesome/fa-microchip",
+        label: function() {
+            return this.name || "v8 cpu profiler";
+        },
+        oneditprepare: function() { 
+            var node = this;
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="v8-cpu-profiler">
+    <div class="form-row">
+        <label for="node-input-timeout"><i class="fa fa-clock"></i> Timeout</label>
+        <input type="number" id="node-input-timeout" min="0" style="width:70px;">
+        <span> seconds</span>
+    </div>
+    </br>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="v8-cpu-profiler">
+<p>A Node-RED node to start CPU profiling on the V8 engine (used by NodeJs).</p>
+<p>See my <a target="_blank" href="https://github.com/bartbutenaers/node-red-contrib-v8-cpu-profiler/blob/main/README.md">Github readme</a> page for more information and example flows.  Note that those example flows are also available via the Node-RED <a target="_blank" href="notused" onclick="RED.actions.invoke('core:show-import-dialog');return false;">Import dialog</a>.</p>
+<p>The profiling will be started by injecting <code>msg.payload="start_profiling"</code>, and stopped by injecting <code>msg.payload="stop_profiling"</code>.  Once the profiling has been stopped, the profiling result will be send in the payload of the output message.
+<p><strong>Timeout:</strong><br/>
+Specify after which time interval (in seconds) the profiling should be stopped, in case no <code>stop_profiling</code> is injected within that interval. A timeout value of <code>0</code> means no timeout.</p>
+</script>
