@@ -7,6 +7,8 @@ Run the following npm command in your Node-RED user directory (typically ~/.node
 npm install node-red-contrib-v8-cpu-profiler
 ```
 
+Remark: This node is based on the official [v8-profiler-next](https://www.npmjs.com/package/v8-profiler-next) package.
+
 ## Support my Node-RED developments
 Please buy my wife a coffee to keep her happy, while I am busy developing Node-RED stuff for you ...
 
