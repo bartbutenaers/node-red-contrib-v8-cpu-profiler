@@ -1,5 +1,5 @@
 # node-red-contrib-v8-cpu-profiler
-A Node-RED node to start CPU profiling on the V8 engine (used by NodeJs).
+A Node-RED node to start CPU profiling on the V8 engine (used by NodeJs), to determine the root cause of high CPU usage.
 
 ## Install
 Run the following npm command in your Node-RED user directory (typically ~/.node-red):
@@ -38,7 +38,9 @@ These are the basic steps that need to be executed:
 
 5. The File-Write node will store the json result in a ***.cpuprofile*** file.
 
-6. Open the .cpuprofile file in a third party tool to show the ***flamegraph***.  See [this](https://github.com/bartbutenaers/node-red-contrib-v8-cpu-profiler/wiki/Visualize-the-.cpuprofile-file-in-Chrome-Developer-Tools) wiki page how to achieve this via the Chrome Developer Tools.
+6. Open the .cpuprofile file in a third party tool to show the ***flamegraph***, for example via Chrome Developer Tools.
+
+The wiki contains a [tutorial](https://github.com/bartbutenaers/node-red-contrib-v8-cpu-profiler/wiki/Do-a-Node-RED-CPU-profiling-analysis-via-Chrome-Developer-Tools) which explains step-by-step how to do a Node-RED CPU profiling analysis via Chrome Developer Tools.
 
 ## Node properties
 
