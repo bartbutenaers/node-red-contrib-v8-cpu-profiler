@@ -9,6 +9,10 @@ npm install node-red-contrib-v8-cpu-profiler
 
 Remark: This node is based on the official [v8-profiler-next](https://www.npmjs.com/package/v8-profiler-next) package.
 
+| :warning: Please have a look at the tutorials on the [wiki](https://github.com/bartbutenaers/node-red-contrib-v8-cpu-profiler/wiki) |
+|:---------------------------|
+
+
 ## Support my Node-RED developments
 Please buy my wife a coffee to keep her happy, while I am busy developing Node-RED stuff for you ...
 
