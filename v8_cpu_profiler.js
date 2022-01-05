@@ -27,19 +27,20 @@
         function startProfiling() {
             if (node.timeout > 0) {
                 node.timer = setTimeout(function() {
-                    stopProfiling();
+                    stopProfiling(false);
                 }, node.timeout * 1000);
             }
             
             // Pass the id of this node as title, to allow the V8 profiler to collect several profiles at once.
             // Which means one profile for each v8_profiler node
             v8ProfilerNext.startProfiling(node.id, true);
+            node.startTimestamp = Date.now();
             node.profilerEnabled = true;
             
             node.status({fill:"blue", shape:"dot", text:"profiling..."});
         }
         
-        function stopProfiling() {
+        function stopProfiling(interrupted) {
             if(node.timer) {
                 clearTimeout(node.timer);
             }
@@ -47,13 +48,29 @@
             node.status({fill:"blue", shape:"dot", text:"stopping..."});
             
             const profile = v8ProfilerNext.stopProfiling(node.id);
+            node.endTimestamp = Date.now();
 
             profile.export(function(err, result) {
                 if (err) {
                     node.error('Cannot export profile: ' + err);
                 }
                 else {
-                    node.send({ payload: result });
+                    var outputMsg = {
+                        payload: {
+                            profile: result,
+                            startTimestamp: node.startTimestamp,
+                            endTimestamp: node.endTimestamp
+                        }
+                    }
+                    
+                    if (interrupted) {
+                        // Premature interrupted profiles will be send on the second output
+                        node.send([null, outputMsg]);
+                    }
+                    else {
+                        // Entirely completed profiles will be send on the first output
+                        node.send([outputMsg, null]);
+                    }
                 }
                 
                 node.status({});
@@ -78,7 +95,7 @@
                         node.warn("The profiler was not started yet");
                     }
                     else {
-                        stopProfiling();
+                        stopProfiling(true);
                     }
                     break;
                 default:
@@ -88,7 +105,7 @@
         
         node.on("close", function() {
             if (node.profilerEnabled) {
-                stopProfiling();
+                stopProfiling(true);
             }
         });
     }
