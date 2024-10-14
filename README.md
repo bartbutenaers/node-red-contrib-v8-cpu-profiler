@@ -27,7 +27,7 @@ The following example flow shows how profiling can be started and stopped manual
 
 ![example flow](https://user-images.githubusercontent.com/14224149/148294120-44d5a3e2-a0e0-4b55-adc8-60f3f9a4b028.png)
 ```
-[{"id":"563b8f929d5b402f","type":"inject","z":"f3e346780eaa6c3c","name":"Start profiling","props":[{"p":"payload"}],"repeat":"","crontab":"","once":false,"onceDelay":0.1,"topic":"","payload":"start_profiling","payloadType":"str","x":570,"y":1820,"wires":[["2a2bf09c08c27940"]]},{"id":"61c69682821e25dd","type":"inject","z":"f3e346780eaa6c3c","name":"Stop profiling","props":[{"p":"payload"}],"repeat":"","crontab":"","once":false,"onceDelay":0.1,"topic":"","payload":"stop_profiling","payloadType":"str","x":570,"y":1880,"wires":[["2a2bf09c08c27940"]]},{"id":"f917781ef1253bb4","type":"file","z":"f3e346780eaa6c3c","name":"Save file","filename":"","appendNewline":false,"createDir":false,"overwriteFile":"true","encoding":"none","x":1200,"y":1820,"wires":[[]]},{"id":"2a2bf09c08c27940","type":"v8-cpu-profiler","z":"f3e346780eaa6c3c","timeout":"20","name":"","x":780,"y":1820,"wires":[["e230b5fe5c4b8237"],["e230b5fe5c4b8237"]]},{"id":"e230b5fe5c4b8237","type":"change","z":"f3e346780eaa6c3c","name":"Construct filename","rules":[{"t":"set","p":"filename","pt":"msg","to":"'c:\\\\temp\\\\' & payload.startTimestamp & '-' & payload.endTimestamp & '.cpuprofile'","tot":"jsonata"},{"t":"set","p":"payload","pt":"msg","to":"payload.profile","tot":"msg"}],"action":"","property":"","from":"","to":"","reg":false,"x":1010,"y":1820,"wires":[["f917781ef1253bb4"]]}]
+[{"id":"563b8f929d5b402f","type":"inject","z":"4aad778b57d4f47b","name":"Start profiling","props":[{"p":"payload"}],"repeat":"","crontab":"","once":false,"onceDelay":0.1,"topic":"","payload":"start_profiling","payloadType":"str","x":950,"y":720,"wires":[["2a2bf09c08c27940"]]},{"id":"61c69682821e25dd","type":"inject","z":"4aad778b57d4f47b","name":"Stop profiling","props":[{"p":"payload"}],"repeat":"","crontab":"","once":false,"onceDelay":0.1,"topic":"","payload":"stop_profiling","payloadType":"str","x":950,"y":780,"wires":[["2a2bf09c08c27940"]]},{"id":"f917781ef1253bb4","type":"file","z":"4aad778b57d4f47b","name":"Save file","filename":"filename","filenameType":"msg","appendNewline":false,"createDir":false,"overwriteFile":"true","encoding":"none","x":1580,"y":720,"wires":[[]]},{"id":"2a2bf09c08c27940","type":"v8-cpu-profiler","z":"4aad778b57d4f47b","timeout":"20","format":"tree","name":"","x":1160,"y":720,"wires":[["e230b5fe5c4b8237"],["e230b5fe5c4b8237"]]},{"id":"e230b5fe5c4b8237","type":"change","z":"4aad778b57d4f47b","name":"Construct filename","rules":[{"t":"set","p":"filename","pt":"msg","to":"'/tmp/' & payload.startTimestamp & '-' & payload.endTimestamp & '.cpuprofile'","tot":"jsonata"},{"t":"set","p":"payload","pt":"msg","to":"payload.profile","tot":"msg"}],"action":"","property":"","from":"","to":"","reg":false,"x":1390,"y":720,"wires":[["f917781ef1253bb4"]]}]
 ```
 The payload of the output message will contain following fields:
 + `profile`: the profiling result (in json format).
@@ -64,5 +64,7 @@ The wiki contains a [tutorial](https://github.com/bartbutenaers/node-red-contrib
 ## Node properties
 
 ### Timeout
-
 Specify after which time interval (in seconds) the profiling should be stopped, in case no `stop_profiling` is injected within that interval. A timeout value of `0` means no timeout.</p>
+
+### Format
+Specify which cpu profile format is required.  The older *'flat'* type or the new *'tree'* type.  The latter one is required for Chrome, Visual Studio Code, ...
