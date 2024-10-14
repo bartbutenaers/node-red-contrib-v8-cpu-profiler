@@ -10,12 +10,13 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<script type="text/javascript">      
+<script type="text/javascript">
     RED.nodes.registerType('v8-cpu-profiler',{
         category: 'function',
         color: '#a6bbcf',
         defaults: {
             timeout: {value:0},
+            format: {value:"tree"},
             name: {value:""}
         },
         inputs:1,
@@ -23,24 +24,35 @@
         outputLabels: ["completed","interrupted"],
         icon: "font-awesome/fa-microchip",
         label: function() {
-            return this.name || "v8 cpu profiler";
+            return this.name || "v8 cpu profiler"
         },
-        oneditprepare: function() { 
-            var node = this;
+        oneditprepare: function() {
+            let node = this
+
+            if (!node.format) {
+                $("#node-input-format").val("tree")
+            }
         }
     });
 </script>
 
 <script type="text/x-red" data-template-name="v8-cpu-profiler">
     <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <br>
+    <div class="form-row">
         <label for="node-input-timeout"><i class="fa fa-clock"></i> Timeout</label>
         <input type="number" id="node-input-timeout" min="0" style="width:70px;">
         <span> seconds</span>
     </div>
-    </br>
     <div class="form-row">
-        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
-        <input type="text" id="node-input-name" placeholder="Name">
+        <label for="node-input-format"><i class="fa fa-cubes"></i> Format</label>
+        <select id="node-input-format" style="width:70%;">
+            <option value="tree">Tree</option>
+            <option value="flat">Low</option>
+        </select>
     </div>
 </script>
 
@@ -50,4 +62,6 @@
 <p>The profiling will be started by injecting <code>msg.payload="start_profiling"</code>, and stopped by injecting <code>msg.payload="stop_profiling"</code>.  Once the profiling has been stopped, the profiling result will be send in the payload of the output message.
 <p><strong>Timeout:</strong><br/>
 Specify after which time interval (in seconds) the profiling should be stopped, in case no <code>stop_profiling</code> is injected within that interval. A timeout value of <code>0</code> means no timeout.</p>
+<p><strong>Format:</strong><br/>
+Specify the cpu profile format, the old <code>flat</code> or the new <code>tree</code> type.</p>
 </script>
